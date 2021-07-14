@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 源数据
+    let person = {
+      name: '张三', age: 18
+    }
+
+    // 模拟Vue2中实习响应式
+    // #region
+    // let p = {}
+    // Object.defineProperty(p, 'name', {
+    //   configurable: true,
+    //   get() { // 有人读取name时调用
+    //     return person.name
+    //   },
+    //   set(value) { // 有人修改name时调用
+    //     console.log('有人修改了name属性，我发现了，我要去更新界面！')
+    //     person.name = value
+    //   }
+    // })
+    // Object.defineProperty(p, 'age', {
+    //   get() { // 有人读取age时调用
+    //     return person.age
+    //   },
+    //   set(value) { // 有人修改age时调用
+    //     console.log('有人修改了age属性，我发现了，我要去更新界面！')
+    //     person.age = value
+    //   }
+    // })
+    // #endregion
+
+    // 模拟Vue3中实习响应式
+    // #region
+    const p = new Proxy(person, {
+      // 有人读取p的某个属性时调用
+      get(target, propName) {
+        console.log(`有人读取了${target}身上的${propName}属性`)
+        // return target[propName]
+        return Reflect.get(target.propName)
+      },
+      // 有人修改p的某个属性时调用、或给p追加某个属性时调用
+      set(target, propName, value) {
+        console.log(`有人修改了${target}身上的${propName}属性，我要去更新界面了！`)
+        // target[propName] = value
+        Reflect.set(target, propName, value)
+      },
+      // 有人删除p的某个属性时调用
+      deleteProperty(target, propName) {
+        console.log(`有人删除了${target}身上的${propName}属性，我要去更新界面了！`)
+        // delete target[propName]
+        return Reflect.deleteProperty(target, propName)
+      }
+    })
+    // #endregion
+
+    let obj = { a: 1, b: 2 }
+    // 通过Object.defineProperty去操作
+    // #region
+    // try {
+    //   // Object.defineProperty(obj, 'c', {
+    //   //   get() { return 3 }
+    //   // })
+    //   // Object.defineProperty(obj, 'c', {
+    //   //   get() { return 4 }
+    //   // })
+    // } catch (error) {
+    //   console.log(error)
+    // }
+    // const x1 = Reflect.defineProperty(obj, 'c', {
+    //   get() { return 3 }
+    // })
+    // console.log(x1)
+    // const x2 = Reflect.defineProperty(obj, 'c', {
+    //   get() { return 4 }
+    // })
+    // console.log(x2)
+    // if (x2) { console.log('某某某操作成功了！') } else { console.log('某某某操作失败了！') }
+    // console.log('@@@')
+    // #endregion
+
+  </script>
+</body>
+
+</html>
