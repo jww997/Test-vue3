@@ -17,78 +17,31 @@
 import { ref, reactive, watch } from "vue";
 export default {
   name: "Demo",
-  // watch: {
-  //   sum(newValue, oldValue) {
-  //     console.log("sum的值变化了", newValue, oldValue);
-  //   },
-  //   sum: {
-  //     immediate: true,
-  //     deep: true,
-  //     handler(newValue, oldValue) {
-  //       console.log("sum的值变化了", newValue, oldValue);
-  //     },
-  //   },
-  // },
   setup() {
     // 数据
     let sum = ref(0);
     let msg = ref("你好啊");
-    let person = reactive({
+    let person = ref({
       name: "张三",
       age: 18,
       job: { j1: { salary: 20 } },
     });
 
-    // 情况一：监视ref所定义的一个响应式数据
-    // watch(
-    //   sum,
-    //   (newValue, oldValue) => {
-    //     console.log("sum变化了", newValue, oldValue);
-    //   },
-    //   { immediate: true }
-    // );
-    // 情况二：监视ref所定义的多个响应式数据
-    // watch(
-    //   [sum, msg],
-    //   (newValue, oldValue) => {
-    //     console.log("sum或msg变化了", newValue, oldValue);
-    //   },
-    //   { immediate: true }
-    // );
+    // console.log(sum);
+    // console.log(msg);
+    console.log(person);
 
-    /**
-     * 情况三：监视reactive所定义的一个响应式数据，注意此处无法正确的获取oldValue
-     *    1. 注意：此处无法正确获取oleValue
-     *    2. 注意：强制开启了深度监视（deep配置无效）
-     */
-    watch(
-      person,
-      (newValue, oldValue) => {
-        console.log("person变化了", newValue, oldValue);
-      },
-      { deep: false } // 此处的deep配置无效
-    );
-
-    // 情况四：监视reactive所定义的一个响应式数据中的某个属性
-    // watch(
-    //   () => person.age,
-    //   (newValue, oldValue) => {
-    //     console.log("person的age变化了", newValue, oldValue);
-    //   }
-    // );
-
-    // 情况五：监听reactive所定义的一个响应式数据中的某个属性
-    // watch([() => person.name, () => person.age], (newValue, oldValue) => {
-    //   console.log("person的name或age变化了", newValue, oldValue);
+    // watch(sum, (newValue, oldValue) => {
+    //   console.log("sum的值变化了", newValue, oldValue);
     // });
 
-    // 特殊情况
     watch(
-      () => person.job,
+      // person.value,
+      person,
       (newValue, oldValue) => {
-        console.log("person的job变化了", newValue, oldValue);
+        console.log("person的值变化了", newValue, oldValue);
       },
-      { deep: true } // 此处由于监视的是reactive是定义对象中的某个属性，所以deep配置有效
+      { deep: true }
     );
 
     // 返回一个对象（常用）
